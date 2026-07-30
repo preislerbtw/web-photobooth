@@ -1,6 +1,6 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { useCamera } from '../hooks/useCamera';
-import Navbar from './Navbar';
+import NavBar from "./NavBar";
 import '../style/Photobooth.css';
 
 const TIMER_OPTIONS = [3, 5, 10];
