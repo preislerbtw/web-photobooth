@@ -26,9 +26,9 @@ export default function Landing({ onStart }) {
         </div>
 
         <div className="hero-content">
-          <span className="hero-tag">✦ your moment, your booth</span>
+          <span className="hero-tag">✦ Your moment, your booth</span>
           <h1>
-            capture the <span className="accent">moment.</span>
+            Capture the <span className="accent">moment</span>
           </h1>
           <p>Take photos directly from your browser, choose a layout, and download your comic strip.</p>
           <button className="btn-start" onClick={() => onStart(selectedLayout)}>
