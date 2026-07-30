@@ -16,7 +16,7 @@ export default function Landing({ onStart }) {
   return (
     <div className="landing">
       <Navbar active="home" />
-
+      
       <section className="hero">
         <div className="strip strip-left">
           <div className="strip-frame" />
