@@ -106,7 +106,7 @@ export default function Photobooth({ maxPhotos = 4, layoutName, onBack }) {
 
   return (
     <div className="photobooth">
-      <Navbar active="layouts" />
+      <NavBar active="layouts" />
 
       <div className="photobooth-stage">
         {onBack && (
