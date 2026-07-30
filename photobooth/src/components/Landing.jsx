@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Navbar from './Navbar';
+import NavBar from "./NavBar";
 import '../style/Landing.css';
 
 export const LAYOUTS = [
