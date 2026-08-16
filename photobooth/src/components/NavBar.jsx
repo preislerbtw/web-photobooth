@@ -4,7 +4,6 @@ export default function Navbar({ active = 'Home' }) {
   const links = [
     { id: 'home', label: 'Home' },
     { id: 'layouts', label: 'Choose Layout' },
-    { id: 'about', label: 'About' },
   ];
 
   return (
