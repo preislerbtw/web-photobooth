@@ -1,121 +1,188 @@
+<div align="center">
+
 # Photobooth
 
-Um photobooth desenvolvido com React e Vite que permite tirar fotos diretamente pelo navegador, escolher diferentes layouts e gerar uma sequência de fotos para download.
+**Capture the moment.**
+
+Um photobooth desenvolvido com React e Vite para capturar fotos diretamente pelo navegador, escolher diferentes layouts e criar sua própria sequência de fotos.
+
+<br>
+
+![React](https://img.shields.io/badge/React-2026?style=for-the-badge\&logo=react\&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-2026?style=for-the-badge\&logo=vite\&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-2026?style=for-the-badge\&logo=javascript\&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-3-2026?style=for-the-badge\&logo=css3\&logoColor=white)
+
+</div>
+
+---
 
 ## Preview
 
-![Photobooth Preview](./public/preview.png)
+<div align="center">
+
+<img src="./photobooth/public/preview.png" alt="Photobooth Preview" width="100%">
+
+</div>
+
+---
 
 ## Sobre o projeto
 
-O Photobooth foi desenvolvido como um projeto para praticar desenvolvimento com React, criação de componentes, estilização com CSS e utilização da câmera do navegador.
+O **Photobooth** é uma aplicação web que utiliza a câmera do dispositivo para capturar fotos e transformá-las em uma sequência personalizada.
 
-A aplicação possui uma interface simples e moderna, permitindo que o usuário escolha o formato da sequência de fotos antes de começar.
+O usuário pode escolher entre diferentes layouts, capturar suas fotos e gerar o resultado final para download.
+
+O projeto foi desenvolvido com foco em uma interface simples, moderna e intuitiva.
+
+---
 
 ## Funcionalidades
 
 * Acesso à câmera diretamente pelo navegador
 * Captura de fotos
-* Contagem regressiva para as fotos
+* Contagem regressiva antes das fotos
 * Escolha de diferentes layouts
-* Visualização da sequência de fotos
-* Download do resultado final
-* Navegação entre as páginas da aplicação
+* Visualização das fotos capturadas
+* Geração da sequência final
+* Download do resultado
+* Navegação entre as páginas
 * Interface responsiva
 
-## Layouts disponíveis
+---
 
-| Layout   | Fotos   |
-| -------- | ------- |
-| Layout A | 3 fotos |
-| Layout B | 4 fotos |
-| Layout C | 5 fotos |
-| Layout D | 6 fotos |
-| Layout E | 7 fotos |
+## Layouts
+
+A aplicação possui diferentes formatos para a sequência de fotos:
+
+| Layout | Fotos |
+| :----: | :---: |
+|    A   |   3   |
+|    B   |   4   |
+|    C   |   5   |
+|    D   |   6   |
+|    E   |   7   |
+
+---
 
 ## Tecnologias
 
-* React
-* JavaScript
-* Vite
-* CSS
-* HTML
-* API de câmera do navegador
+<div align="center">
+
+| Tecnologia | Utilização                     |
+| :--------: | ------------------------------ |
+|    React   | Construção da interface        |
+|    Vite    | Desenvolvimento e build        |
+| JavaScript | Lógica da aplicação            |
+|     CSS    | Estilização                    |
+|    HTML    | Estrutura da aplicação         |
+| Camera API | Acesso à câmera do dispositivo |
+
+</div>
+
+---
 
 ## Estrutura do projeto
 
 ```text
-src/
-├── app/
-│   ├── App.jsx
-│   └── main.jsx
+photobooth/
+├── public/
 │
-├── components/
-│   ├── Landing.jsx
-│   ├── NavBar.jsx
-│   └── Photobooth.jsx
+├── src/
+│   ├── app/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── components/
+│   │   ├── Landing.jsx
+│   │   ├── NavBar.jsx
+│   │   └── Photobooth.jsx
+│   │
+│   ├── hooks/
+│   │   └── useCamera.js
+│   │
+│   └── style/
+│       ├── App.css
+│       ├── Landing.css
+│       ├── NavBar.css
+│       └── Photobooth.css
 │
-├── hooks/
-│   └── useCamera.js
-│
-└── style/
-    ├── App.css
-    ├── Landing.css
-    ├── NavBar.css
-    └── Photobooth.css
+├── .gitignore
+├── index.html
+├── package.json
+├── package-lock.json
+└── vite.config.js
 ```
+
+---
 
 ## Como executar
 
-Clone o repositório:
+### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/photobooth.git
+git clone https://github.com/preislerbtw/web-photobooth.git
 ```
 
-Entre na pasta do projeto:
+### 2. Entre na pasta do projeto
 
 ```bash
-cd photobooth
+cd web-photobooth/photobooth
 ```
 
-Instale as dependências:
+### 3. Instale as dependências
 
 ```bash
 npm install
 ```
 
-Inicie o projeto:
+### 4. Execute o projeto
 
 ```bash
 npm run dev
 ```
 
-Depois, acesse o endereço disponibilizado pelo Vite no navegador.
+Depois, abra no navegador o endereço fornecido pelo Vite.
 
-## Permissão da câmera
+---
 
-Para utilizar o Photobooth, é necessário permitir que o navegador tenha acesso à câmera do dispositivo.
+## Câmera
 
-A aplicação utiliza a câmera através das APIs disponíveis no navegador.
+Para utilizar o Photobooth, o navegador precisa ter permissão para acessar a câmera do dispositivo.
 
-## Objetivo
+Ao iniciar a aplicação, permita o acesso quando o navegador solicitar.
 
-O projeto foi criado com o objetivo de praticar:
+---
 
-* Desenvolvimento com React
+## Objetivos do projeto
+
+Este projeto foi desenvolvido principalmente para praticar conceitos de desenvolvimento web, incluindo:
+
+* React
 * Componentização
+* Hooks
 * Hooks personalizados
 * Gerenciamento de estados
-* Acesso à câmera com JavaScript
+* Manipulação de elementos
+* API de câmera do navegador
 * Manipulação de imagens
-* Estilização com CSS
-* Desenvolvimento de interfaces modernas
+* CSS
+* Vite
+
+---
 
 ## Status
 
-Projeto desenvolvido para fins de estudo e prática de desenvolvimento web.
+**Em desenvolvimento**
 
-## Autor
+Novas funcionalidades e melhorias podem ser adicionadas ao projeto futuramente.
 
-Jorge Falcão
+---
+
+<div align="center">
+
+### Photobooth
+
+Capture the moment.
+
+</div>
