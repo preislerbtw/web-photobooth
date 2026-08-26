@@ -8,10 +8,10 @@ Um photobooth desenvolvido com React e Vite para capturar fotos diretamente pelo
 
 <br>
 
-![React](https://img.shields.io/badge/React-2026?style=for-the-badge\&logo=react\&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-2026?style=for-the-badge\&logo=vite\&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-2026?style=for-the-badge\&logo=javascript\&logoColor=white)
-![CSS](https://img.shields.io/badge/CSS-3-2026?style=for-the-badge\&logo=css3\&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![CSS](https://img.shields.io/badge/CSS-663399?style=for-the-badge&logo=css&logoColor=white)
 
 </div>
 
