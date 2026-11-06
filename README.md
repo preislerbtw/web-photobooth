@@ -1,4 +1,4 @@
-<div align="center">
+<!-- <div align="center">
 
 # Photobooth
 
@@ -185,4 +185,4 @@ Novas funcionalidades e melhorias podem ser adicionadas ao projeto futuramente.
 
 Capture the moment.
 
-</div>
+</div> -->
