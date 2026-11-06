@@ -7,6 +7,117 @@ const loadImage = (src) =>
     img.onerror = rej;
     img.src = src;
   });
+// safari/iphone ignoram ctx.filter. yeste funcional: desenha vermelho com
+// grayscale e vê se o pixel mudou (só ler a propriedade engana, pois o
+// navegador aceita qualquer valor atribuído).
+let filterSupport;
+function supportsCanvasFilter() {
+  if (filterSupport === undefined) {
+    const c = document.createElement('canvas');
+    c.width = 1;
+    c.height = 1;
+    const ctx = c.getContext('2d');
+    ctx.filter = 'grayscale(1)';
+    ctx.fillStyle = '#ff0000';
+    ctx.fillRect(0, 0, 1, 1);
+    const [r, g] = ctx.getImageData(0, 0, 1, 1).data;
+    filterSupport = Math.abs(r - g) < 30;
+  }
+  return filterSupport;
+}
+
+// matrizes 3x3 equivalentes às do CSS filter
+function colorMatrix(fn, v) {
+  if (fn === 'grayscale') {
+    const a = 1 - v;
+    return [
+      0.2126 + 0.7874 * a, 0.7152 - 0.7152 * a, 0.0722 - 0.0722 * a,
+      0.2126 - 0.2126 * a, 0.7152 + 0.2848 * a, 0.0722 - 0.0722 * a,
+      0.2126 - 0.2126 * a, 0.7152 - 0.7152 * a, 0.0722 + 0.9278 * a,
+    ];
+  }
+  if (fn === 'sepia') {
+    const a = 1 - v;
+    return [
+      0.393 + 0.607 * a, 0.769 - 0.769 * a, 0.189 - 0.189 * a,
+      0.349 - 0.349 * a, 0.686 + 0.314 * a, 0.168 - 0.168 * a,
+      0.272 - 0.272 * a, 0.534 - 0.534 * a, 0.131 + 0.869 * a,
+    ];
+  }
+  if (fn === 'saturate') {
+    return [
+      0.213 + 0.787 * v, 0.715 - 0.715 * v, 0.072 - 0.072 * v,
+      0.213 - 0.213 * v, 0.715 + 0.285 * v, 0.072 - 0.072 * v,
+      0.213 - 0.213 * v, 0.715 - 0.715 * v, 0.072 + 0.928 * v,
+    ];
+  }
+  if (fn === 'hue-rotate') {
+    const r = (v * Math.PI) / 180;
+    const cos = Math.cos(r);
+    const sin = Math.sin(r);
+    return [
+      0.213 + cos * 0.787 - sin * 0.213, 0.715 - cos * 0.715 - sin * 0.715, 0.072 - cos * 0.072 + sin * 0.928,
+      0.213 - cos * 0.213 + sin * 0.143, 0.715 + cos * 0.285 + sin * 0.140, 0.072 - cos * 0.072 - sin * 0.283,
+      0.213 - cos * 0.213 - sin * 0.787, 0.715 - cos * 0.715 + sin * 0.715, 0.072 + cos * 0.928 + sin * 0.072,
+    ];
+  }
+  return null;
+}
+
+function applyFilterOps(canvas, ops) {
+  const ctx = canvas.getContext('2d');
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const d = imageData.data;
+  const clamp = (n) => (n < 0 ? 0 : n > 255 ? 255 : n);
+
+  for (const [fn, v] of ops) {
+    if (fn === 'brightness') {
+      for (let i = 0; i < d.length; i += 4) {
+        d[i] = clamp(d[i] * v);
+        d[i + 1] = clamp(d[i + 1] * v);
+        d[i + 2] = clamp(d[i + 2] * v);
+      }
+    } else if (fn === 'contrast') {
+      const off = 127.5 * (1 - v);
+      for (let i = 0; i < d.length; i += 4) {
+        d[i] = clamp(d[i] * v + off);
+        d[i + 1] = clamp(d[i + 1] * v + off);
+        d[i + 2] = clamp(d[i + 2] * v + off);
+      }
+    } else {
+      const m = colorMatrix(fn, v);
+      if (!m) continue;
+      for (let i = 0; i < d.length; i += 4) {
+        const r = d[i];
+        const g = d[i + 1];
+        const b = d[i + 2];
+        d[i] = clamp(m[0] * r + m[1] * g + m[2] * b);
+        d[i + 1] = clamp(m[3] * r + m[4] * g + m[5] * b);
+        d[i + 2] = clamp(m[6] * r + m[7] * g + m[8] * b);
+      }
+    }
+  }
+  ctx.putImageData(imageData, 0, 0);
+}
+
+// desenha a foto (cover) já com o filtro, usando o método que o navegador suporta
+function drawPhoto(ctx, img, x, y, w, h, filter) {
+  const hasFilter = filter && filter.ops.length > 0;
+  if (!hasFilter) {
+    drawCover(ctx, img, x, y, w, h);
+  } else if (supportsCanvasFilter()) {
+    ctx.filter = filter.css;
+    drawCover(ctx, img, x, y, w, h);
+    ctx.filter = 'none';
+  } else {
+    const tmp = document.createElement('canvas');
+    tmp.width = Math.round(w);
+    tmp.height = Math.round(h);
+    drawCover(tmp.getContext('2d'), img, 0, 0, tmp.width, tmp.height);
+    applyFilterOps(tmp, filter.ops);
+    ctx.drawImage(tmp, x, y, w, h);
+  }
+}
 
 // preenche o espaço cortando o excesso, sem distorcer
 function drawCover(ctx, img, x, y, w, h) {
@@ -100,12 +211,12 @@ function drawStickers(ctx, t, c, W, H, seed, k) {
 }
 
 /**
- * Monta a tira final.
+ * monta a tira final.
  * photos: array de dataURLs, na ordem em que aparecem (de cima pra baixo)
  */
 export async function buildStrip(
   photos,
-  { templateKey = 'classic', colorKey, filterCss = 'none', seed = 1, photoSize = 560 } = {},
+  { templateKey = 'classic', colorKey, filter = null, seed = 1, photoSize = 560 } = {},
 ) {
   const t = TEMPLATES[templateKey];
   const c = COLORS[colorKey || t.defaultColor];
@@ -143,8 +254,7 @@ export async function buildStrip(
       ctx.rect(x, y, PW, PH);
       ctx.clip();
     }
-    ctx.filter = filterCss;
-    drawCover(ctx, img, x, y, PW, PH);
+    drawPhoto(ctx, img, x, y, PW, PH, filter);
     ctx.restore();
 
     ctx.lineWidth = bw;
