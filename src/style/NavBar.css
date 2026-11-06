@@ -8,6 +8,7 @@
 }
 
 .navbar-logo {
+  white-space: nowrap;
   font-weight: 700;
   font-size: 1.2rem;
   letter-spacing: -0.5px;
@@ -20,6 +21,7 @@
 }
 
 .navbar-links a {
+  white-space: nowrap;
   color: #b3b3b3;
   text-decoration: none;
   font-size: 0.9rem;
@@ -52,4 +54,40 @@
   background:  #1187fe;
   border-color:  #1187fe;
   color: #0a0a0a;
+}
+
+/* ===== Celular ===== */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .navbar-logo {
+    font-size: 1rem;
+  }
+
+  .navbar-links {
+    gap: 0.9rem;
+  }
+
+  .navbar-links a {
+    font-size: 0.8rem;
+  }
+
+  .navbar-socials {
+    gap: 0.4rem;
+  }
+
+  .social-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* telas bem pequenas: esconde o X pra caber tudo */
+@media (max-width: 380px) {
+  .navbar-socials a:nth-child(2) {
+    display: none;
+  }
 }
