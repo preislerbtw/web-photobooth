@@ -225,7 +225,7 @@ export default function Photobooth({ maxPhotos = 4, layoutName, templateKey = 'c
           <h2>Your Strip</h2>
 
           <div className="option-group">
-            <span className="option-label">Cor</span>
+            <span className="option-label">Color</span>
             <div className="option-row">
               {Object.entries(COLORS).map(([key, c]) => (
                 <button
@@ -241,7 +241,7 @@ export default function Photobooth({ maxPhotos = 4, layoutName, templateKey = 'c
           </div>
 
           <div className="option-group">
-            <span className="option-label">Filtro</span>
+            <span className="option-label">Filter</span>
             <div className="option-row">
               {Object.entries(FILTERS).map(([key, f]) => (
                 <button
