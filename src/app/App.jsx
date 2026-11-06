@@ -5,8 +5,10 @@ import '../style/App.css';
 
 function App() {
   const [selectedLayoutId, setSelectedLayoutId] = useState(null);
+  const [options, setOptions] = useState({ templateKey: 'classic' });
 
-  const handleStart = (layoutId) => {
+  const handleStart = (layoutId, opts) => {
+    if (opts) setOptions(opts);
     setSelectedLayoutId(layoutId);
   };
 
@@ -24,6 +26,7 @@ function App() {
     <Photobooth
       maxPhotos={layout.poses}
       layoutName={layout.name}
+      templateKey={options.templateKey}
       onBack={handleBackToLanding}
     />
   );

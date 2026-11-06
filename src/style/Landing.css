@@ -3,6 +3,26 @@
   color: #f5f5f5;
   min-height: 100vh;
   font-family: system-ui, sans-serif;
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+}
+
+/* brilho azul de fundo (cobre mais da tela) */
+.landing::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1100px;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 75% 60% at 50% 18%,
+    rgba(25, 90, 230, 0.25),
+    transparent 70%
+  );
 }
 
 .hero {
@@ -13,14 +33,6 @@
   padding: 5rem 2rem;
   position: relative;
   overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 30%, rgba(25, 90, 230, 0.12), transparent 60%);
-  pointer-events: none;
 }
 
 .hero-content {
@@ -168,3 +180,80 @@
   color: #888;
 }
 
+/* ===== Carrossel de templates ===== */
+.templates-title {
+  margin-top: 4rem;
+}
+
+.template-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.template-stage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 240px;
+  min-height: 300px;
+  padding: 1.5rem 0;
+}
+
+.template-stage img {
+  max-height: 460px;
+  max-width: 100%;
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.carousel-arrow {
+  background: #111;
+  border: 1px solid #222;
+  color: #f5f5f5;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.carousel-arrow:hover {
+  border-color: #1187fe;
+  transform: scale(1.08);
+}
+
+.template-name {
+  display: block;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.8rem;
+}
+
+.carousel-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  background: #333;
+  padding: 0;
+  cursor: pointer;
+}
+
+.carousel-dot.is-active {
+  background: #1187fe;
+}
+
+.layouts-start {
+  margin-top: 2rem;
+}

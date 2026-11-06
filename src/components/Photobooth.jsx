@@ -1,11 +1,13 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { useCamera } from '../hooks/useCamera';
 import NavBar from "./NavBar";
+import { FILTERS, COLORS, TEMPLATES } from '../app/effects';
+import { buildStrip } from '../app/buildStrip';
 import '../style/Photobooth.css';
 
 const TIMER_OPTIONS = [3, 5, 10];
 
-export default function Photobooth({ maxPhotos = 4, layoutName, onBack }) {
+export default function Photobooth({ maxPhotos = 4, layoutName, templateKey = 'classic', onBack }) {
   const { videoRef, error, isReady, devices, startCamera, stopCamera } = useCamera();
   const canvasRef = useRef(null);
   const stageRef = useRef(null);
@@ -16,6 +18,10 @@ export default function Photobooth({ maxPhotos = 4, layoutName, onBack }) {
   const [timerSeconds, setTimerSeconds] = useState(3);
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [colorKey, setColorKey] = useState(TEMPLATES[templateKey].defaultColor);
+  const [filter, setFilter] = useState('normal');
+  const [seed, setSeed] = useState(() => Math.floor(Math.random() * 99999));
+  const [strip, setStrip] = useState(null);
 
   useEffect(() => {
     startCamera();
@@ -89,6 +95,33 @@ export default function Photobooth({ maxPhotos = 4, layoutName, onBack }) {
     link.download = `photobooth-${Date.now()}-${index}.png`;
     link.click();
   }, []);
+
+  // gera a tira (preview e download usam a mesma imagem)
+  useEffect(() => {
+    if (photos.length === 0) {
+      setStrip(null);
+      return;
+    }
+    let cancelled = false;
+    // photos guarda a mais recente primeiro; na tira a 1ª foto fica no topo
+    buildStrip([...photos].reverse(), {
+      templateKey,
+      colorKey,
+      filterCss: FILTERS[filter].css,
+      seed,
+    }).then((url) => {
+      if (!cancelled) setStrip(url);
+    });
+    return () => { cancelled = true; };
+  }, [photos, templateKey, colorKey, filter, seed]);
+
+  const handleDownloadStrip = useCallback(() => {
+    if (!strip) return;
+    const link = document.createElement('a');
+    link.href = strip;
+    link.download = `photobooth-strip-${Date.now()}.png`;
+    link.click();
+  }, [strip]);
 
   const handleClearAll = useCallback(() => {
     setPhotos([]);
@@ -186,6 +219,64 @@ export default function Photobooth({ maxPhotos = 4, layoutName, onBack }) {
       </div>
 
       <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+      {photos.length > 0 && (
+        <div className="strip-section">
+          <h2>Your Strip</h2>
+
+          <div className="option-group">
+            <span className="option-label">Cor</span>
+            <div className="option-row">
+              {Object.entries(COLORS).map(([key, c]) => (
+                <button
+                  key={key}
+                  className={`chip ${colorKey === key ? 'chip-active' : ''}`}
+                  onClick={() => setColorKey(key)}
+                >
+                  <span className="chip-dot" style={{ background: c.bg, borderColor: c.border }} />
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="option-group">
+            <span className="option-label">Filtro</span>
+            <div className="option-row">
+              {Object.entries(FILTERS).map(([key, f]) => (
+                <button
+                  key={key}
+                  className={`chip ${filter === key ? 'chip-active' : ''}`}
+                  onClick={() => setFilter(key)}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="strip-preview">
+            {strip && (
+              <img
+                src={strip}
+                alt="Tira de fotos"
+                style={{ transform: `rotate(${TEMPLATES[templateKey].tilt}deg)` }}
+              />
+            )}
+          </div>
+
+          <div className="controls">
+            {TEMPLATES[templateKey].stickers && (
+              <button className="btn btn-secondary" onClick={() => setSeed(Math.floor(Math.random() * 99999))}>
+                Shuffle stickers
+              </button>
+            )}
+            <button className="btn btn-capture" onClick={handleDownloadStrip} disabled={!strip}>
+              Download Strip
+            </button>
+          </div>
+        </div>
+      )}
 
       {photos.length > 0 && (
         <div className="gallery">
